@@ -19,11 +19,35 @@ export function createImage(src: string, canvas: any): Promise<any> {
   return new Promise((resolve, reject) => {
     try {
       image.onload = (e: any) => {
-        console.log('iamge-loaded', src, e)
+        // console.log('iamge-loaded', src, e)
         resolve(image)
       }
     } catch (err) {
       reject(err)
     }
   })
+}
+
+// 
+export function getScale(width:number, height:number): number {
+  let scale = 1;
+  // 获取最大的一边
+  const canvasWidth = 343 * 2;
+  const canvasHeight = 482 * 2;
+
+  const heightDiff =  height - canvasHeight;
+  const widthDiff = width - canvasWidth;
+
+  if (heightDiff > widthDiff) {
+    if (heightDiff > 0) {
+      
+      scale = canvasHeight / height;
+    }
+  } else {
+    if (widthDiff > 0) {
+      scale = canvasWidth / width;
+    }
+  }
+
+  return scale;
 }

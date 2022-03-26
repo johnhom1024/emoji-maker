@@ -13,79 +13,43 @@
         id="canvas"
         style="width: 100%; height: 80vh"
         @touchstart="handleTouchstart"
+        @touchmove="handleTouchmove"
       ></canvas>
     </view>
     <!-- 操作 -->
     <view class="operation">
       <button @click="chooseImage">选择图片</button>
+      <button @click="clearCanvas">清除画布</button>
     </view>
   </view>
 </template>
 
 <script>
-import { createImage } from '@/util/index';
+
+import { createImage, getScale } from '@/util/index';
+import DragCanvas from '@/util/DragCanvas';
+
 export default {
   data() {
     return {
-      ctx: null,
-      canvas: null,
+      dragCanvasInstance: null,
     }
   },
   onLoad() {
-    // 通过 SelectorQuery 获取 Canvas 节点
-    wx.createSelectorQuery()
-      .select('#canvas')
-      .fields({
-        node: true,
-        size: true,
-      })
-      .exec(this.init.bind(this));
+    this.dragCanvasInstance = new DragCanvas('#canvas');
   },
   methods: {
-    init(res) {
-      if (res[0]) {
-        const {width, height, node} = res[0];
-        const canvas = node;
-        const ctx = canvas.getContext('2d');
-        const dpr = wx.getSystemInfoSync().pixelRatio
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        this.ctx = ctx;
-        this.canvas = canvas;
-
-        console.log(this.ctx, 'ctx');
-        console.log(this.canvas, 'canvas');
-
-        // ctx.scale(dpr, dpr)
-        // 设置矩形的颜色为红色
-        // ctx.fillStyle = 'red';
-        // ctx.fillRect(0, 0, 100, 100);
-        // ctx.draw();
-      }
-    },
     chooseImage() {
-      uni.chooseImage({
-        count: 1,
-        sourceType: ["album"],
-        success:  (res) => {
-          const tempFilePaths = res.tempFilePaths[0];
-          uni.getImageInfo({
-            src: tempFilePaths,
-            success: async (imageInfo) => {
-              const { width, height, path } = imageInfo;
-              const image = await createImage(path, this.canvas)
-
-              this.ctx.drawImage(image, 0, 0, width, height);
-            },
-          });
-        },
-        fail: () => {
-          console.log("图片选择失败");
-        },
-      });
+      this.dragCanvasInstance.chooseImage();
     },
     handleTouchstart(e) {
-      console.log(e);
+      this.dragCanvasInstance.touchstart(e);
+    },
+    clearCanvas() {
+      this.dragCanvasInstance.clearCanvas();
+    },
+    handleTouchmove(e) {
+      this.dragCanvasInstance.touchmove(e);
     }
   },
 };

@@ -5,7 +5,7 @@
       <text class="title">{{ title }}</text>
     </view>
     
-    <view @click="handleJump">跳去制作表情</view>
+    <button @click="handleJump">跳去制作表情</button>
   </view>
 </template>
 
