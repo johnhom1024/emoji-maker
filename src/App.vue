@@ -14,6 +14,6 @@
     });
 </script>
 
-<style>
-    /*每个页面公共css */
+<style lang="scss">
+@import '~@/assets/scss/public.scss';
 </style>

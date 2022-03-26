@@ -45,7 +45,7 @@
     "libVersion": "2.23.2",
     "appid": "wx683bb648f2772d58",
     "projectname": "my-miniapp",
-    "miniprogramRoot": "dist/dev/mp-weixin/",
+    "miniprogramRoot": "./dist/dev/mp-weixin/",
     "debugOptions": {
         "hidedInDevtools": []
     },
