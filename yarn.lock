@@ -10767,6 +10767,11 @@ uuid@^8.3.2:
   resolved "https://registry.npmmirror.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
+uview-ui@^2.0.29:
+  version "2.0.29"
+  resolved "https://registry.npmmirror.com/uview-ui/-/uview-ui-2.0.29.tgz#467b37c946183ea86bb35526ecffac8bbf79a7b9"
+  integrity sha512-d5SttbPcowomrgpL7A1LMKRbemXtyyzpPCy98/+VQR3jfSyyHC9tfj/ZeAOKpqTn1rf9gOj2wc5tda/kVmYX2Q==
+
 v8-to-istanbul@^4.1.3:
   version "4.1.4"
   resolved "https://registry.npmmirror.com/v8-to-istanbul/-/v8-to-istanbul-4.1.4.tgz#b97936f21c0e2d9996d4985e5c5156e9d4e49cd6"

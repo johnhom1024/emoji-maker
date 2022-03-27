@@ -3,19 +3,13 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "制作表情包"
 			}
-		},
-    {
-      "path": "pages/emoji/index",
-      "style": {
-        "navigationBarTitleText": "表情包制作"
-      }
-    }
+		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "表情包DIY神器",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}

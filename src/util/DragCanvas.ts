@@ -95,6 +95,11 @@ class DragCanvas {
     });
   }
 
+  fillText(text:string, x:number, y:number) {
+    this.ctx.font = "48px sans-serif";
+    this.ctx.fillText(text, x, y);
+  }
+
   // 清除画布中的内容
   clearRect() {
     this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
