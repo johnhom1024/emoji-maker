@@ -37,7 +37,6 @@ class DragCanvas {
         size: true,
       })
       .exec(this.init.bind(this));
-
   }
 
   init(res: Array<any>) {
@@ -118,6 +117,7 @@ class DragCanvas {
   // 清空画布
   clearCanvas() {
     this.imgArray = [];
+    this.textArray = [];
     this.clearRect();
   }
 
