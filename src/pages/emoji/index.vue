@@ -7,11 +7,12 @@
 <template>
   <view>
     <!-- 画布 -->
-    <view class="vh-80 drawer">
+    <view class="vh-50 drawer">
       <canvas
         type="2d"
         id="canvas"
-        style="width: 100%; height: 80vh"
+        class="canvas-container"
+        style="width: 100%; height: 100%"
         @touchstart="handleTouchstart"
         @touchmove="handleTouchmove"
       ></canvas>
@@ -25,8 +26,6 @@
 </template>
 
 <script>
-
-import { createImage, getScale } from '@/util/index';
 import DragCanvas from '@/util/DragCanvas';
 
 export default {
@@ -57,14 +56,19 @@ export default {
 
 <style lang="scss">
 page {
-  padding: 0 30rpx;
   box-sizing: border-box;
 }
 </style>
 
 <style lang="scss" scoped>
-.vh-80 {
-  height: 80vh;
-  border: 2rpx solid black;
+.vh-50 {
+  height: 50vh;
+}
+.drawer {
+  padding: 30rpx;
+  background-color: #efefef;
+}
+.canvas-container {
+  border: 2rpx solid #999999;
 }
 </style>

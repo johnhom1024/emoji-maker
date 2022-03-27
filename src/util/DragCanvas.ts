@@ -5,7 +5,7 @@
  * @Description: 
  */
 
-import { createImage } from "@/util";
+import { createImage, getScale } from "@/util";
 import DragImage from './DragImage';
 
 class DragCanvas {
@@ -78,7 +78,9 @@ class DragCanvas {
     const x = 0;
     const y = 0;
 
-    const dragImage = new DragImage({ imageEl, x, y, width, height, ctx: this.ctx })
+    const scale = getScale(width, height);
+
+    const dragImage = new DragImage({ imageEl, x, y, width: width * scale, height: height * scale, ctx: this.ctx })
 
     // 将imagepush进imgArray中
     this.imgArray.push(dragImage)
@@ -140,6 +142,30 @@ class DragCanvas {
     this.clearRect();
     this.paint();
   }
+
+  save() {
+    wx.canvasToTempFilePath({
+      x: 0,
+      y: 0,
+      width: this.canvasWidth,
+      height: this.canvasHeight,
+      canvas: this.canvas,
+      complete(res:any) {
+        if (res.errMsg === 'canvasToTempFilePath:ok') {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success(res) {
+              wx.showToast({
+                title: '图片保存成功',
+                icon: 'none'
+              })
+            }
+          })
+        }
+      }
+    })
+  }
+
 }
 
 export default DragCanvas;

@@ -28,24 +28,24 @@ export function createImage(src: string, canvas: any): Promise<any> {
   })
 }
 
-// 
-export function getScale(width:number, height:number): number {
+// 根据图片的宽高，返回图片的缩放比例
+export function getScale(imageWidth:number, imageHeight:number): number {
   let scale = 1;
   // 获取最大的一边
   const canvasWidth = 343 * 2;
   const canvasHeight = 482 * 2;
 
-  const heightDiff =  height - canvasHeight;
-  const widthDiff = width - canvasWidth;
+  const heightDiff =  imageHeight - canvasHeight;
+  const widthDiff = imageWidth - canvasWidth;
 
   if (heightDiff > widthDiff) {
     if (heightDiff > 0) {
       
-      scale = canvasHeight / height;
+      scale = canvasHeight / imageHeight;
     }
   } else {
     if (widthDiff > 0) {
-      scale = canvasWidth / width;
+      scale = canvasWidth / imageWidth;
     }
   }
 
