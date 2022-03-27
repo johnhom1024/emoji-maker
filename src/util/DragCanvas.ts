@@ -7,7 +7,7 @@
 
 import { createImage, getScale } from "@/util";
 import DragImage from './DragImage';
-
+import DragText from './DragText';
 class DragCanvas {
   ctx: CanvasRenderingContext2D = {} as CanvasRenderingContext2D;
   canvas = {};
@@ -21,6 +21,8 @@ class DragCanvas {
 
   // 画布中的图片
   imgArray: Array<DragImage> = [];
+
+  textArray: Array<DragText> = [];
 
   // canvasClassIdName: 为canvas画布的节点类名id
   constructor(canvasClassIdName: string) {
@@ -93,11 +95,19 @@ class DragCanvas {
     this.imgArray.forEach(dragImage => {
       dragImage.paint();
     });
+
+    this.textArray.forEach(dragText => {
+      dragText.paint();
+    })
   }
 
-  fillText(text:string, x:number, y:number) {
-    this.ctx.font = "48px sans-serif";
-    this.ctx.fillText(text, x, y);
+  fillText(text: string) {
+    const x = 100;
+    const y = 100;
+    const textItem = new DragText({ text, x, y, ctx: this.ctx });
+
+    this.textArray.push(textItem);
+    textItem.paint();
   }
 
   // 清除画布中的内容
@@ -139,6 +149,16 @@ class DragCanvas {
       imgObj.y = finalY;
     })
 
+    this.textArray.forEach(textObj => {
+      const { x: positionX, y: positionY } = textObj;
+
+      const finalX = positionX + diffX;
+      const finalY = positionY + diffY;
+
+      textObj.x = finalX;
+      textObj.y = finalY;
+    })
+
     // 画出imgArray中的图片
 
     this.clickInitialX = x * this.pixelRatio;
@@ -155,7 +175,7 @@ class DragCanvas {
       width: this.canvasWidth,
       height: this.canvasHeight,
       canvas: this.canvas,
-      complete(res:any) {
+      complete(res: any) {
         if (res.errMsg === 'canvasToTempFilePath:ok') {
           wx.saveImageToPhotosAlbum({
             filePath: res.tempFilePath,
@@ -169,6 +189,10 @@ class DragCanvas {
         }
       }
     })
+  }
+
+  translate() {
+    this.ctx.translate(100, 100);
   }
 
 }

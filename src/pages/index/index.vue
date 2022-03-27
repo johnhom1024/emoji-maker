@@ -30,7 +30,6 @@
           <a-input
             placeholder="请输入内容"
             v-model="inputText"
-            @change="change"
           ></a-input>
         </view>
         <a-button @click="addText">加上文字</a-button>
