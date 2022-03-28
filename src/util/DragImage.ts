@@ -40,7 +40,35 @@ class DragImage {
 
   // 将该图片画在画布中
   paint() {
+    this.ctx.save();
     this.ctx.drawImage(this.imageEl, this.x, this.y, this.width, this.height)
+    // 如果为选中状态，则画出虚线边框
+    if (this.selected) {
+      // 设置线段和距离的长度
+      this.ctx.setLineDash([10, 10]);
+      this.ctx.lineDashOffset = 10;
+      this.ctx.strokeStyle = 'red';
+      // 生成一个矩形
+      this.ctx.strokeRect(this.x, this.y, this.width, this.height);
+      // this.ctx.stroke();
+    }
+
+    this.ctx.restore();
+  }
+
+  // 鼠标点下时，是否处于该图片内部
+  isToggle(x:number, y:number) {
+    // 图片最右边的X坐标
+    const rightX = this.x + this.width;
+    // 图片最底部的Y坐标
+    const bottomY = this.y + this.height;
+
+
+    if (x >= this.x && x <= rightX && y >= this.y && y <= bottomY) {
+      this.selected = true;
+      return;
+    }
+    this.selected = false;
   }
 
 }

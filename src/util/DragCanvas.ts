@@ -74,6 +74,7 @@ class DragCanvas {
     });
   }
 
+  // 将图片画到canvas中
   drawImg(imageEl: CanvasImageSource, width: number, height: number) {
 
     const x = 0;
@@ -89,7 +90,7 @@ class DragCanvas {
     dragImage.paint();
   }
 
-  // 画出imgArray中的每个图片
+  // 画出imgArray中的每个图片，和textArray中的每个文字
   paint() {
     this.imgArray.forEach(dragImage => {
       dragImage.paint();
@@ -128,9 +129,18 @@ class DragCanvas {
 
     this.clickInitialX = x * this.pixelRatio;
     this.clickInitialY = y * this.pixelRatio;
+    
+    this.imgArray.forEach(imgObj => {
+      imgObj.isToggle(this.clickInitialX, this.clickInitialY);
+      // this.clearRect();
+      imgObj.paint();
+    })
 
+    this.textArray.forEach(textObj => {
+      // textObj.isToggle
+    })
   }
-
+  
   touchmove(e: any) {
     const { x, y } = e.touches[0];
 
@@ -140,8 +150,11 @@ class DragCanvas {
 
     // 调整imgArray中的图片位置
     this.imgArray.forEach(imgObj => {
-      const { x: positionX, y: positionY } = imgObj;
+      const { x: positionX, y: positionY, selected = false } = imgObj;
 
+      if (!selected) {
+        return;
+      }
       const finalX = positionX + diffX;
       const finalY = positionY + diffY;
 
@@ -168,6 +181,7 @@ class DragCanvas {
     this.paint();
   }
 
+  // 生成图片，并且保存到相册中
   save() {
     wx.canvasToTempFilePath({
       x: 0,

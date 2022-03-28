@@ -58,7 +58,6 @@ export default {
     this.dragCanvasInstance = new DragCanvas("#canvas");
   },
   methods: {
-
     chooseImage() {
       this.dragCanvasInstance.chooseImage();
     },
