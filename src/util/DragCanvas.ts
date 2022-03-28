@@ -129,18 +129,40 @@ class DragCanvas {
 
     this.clickInitialX = x * this.pixelRatio;
     this.clickInitialY = y * this.pixelRatio;
-    
+
+    // 先清除画布
+    this.clearRect();
+    // 重新渲染
+    let isSelected = false;
+    // this.imgArray.forEach(imgObj => {
+    //   // 如果为true，则终止
+    //   if (!selectedItem) {
+    //     selectedItem = imgObj.isToggle(this.clickInitialX, this.clickInitialY);
+    //   }
+    //   imgObj.paint();
+    // })
+
+    // 倒过来遍历数组
+    for (let index = this.imgArray.length - 1; index >= 0; index--) {
+      const imgItem = this.imgArray[index];
+
+      if (!isSelected) {
+        isSelected = imgItem.isToggle(this.clickInitialX, this.clickInitialY);
+      } else {
+        // 剩余的图片要取消选中
+        imgItem.selected = false;
+      }
+    }
+
     this.imgArray.forEach(imgObj => {
-      imgObj.isToggle(this.clickInitialX, this.clickInitialY);
-      // this.clearRect();
       imgObj.paint();
     })
 
-    this.textArray.forEach(textObj => {
-      // textObj.isToggle
-    })
+    // this.textArray.forEach(textObj => {
+    //   // textObj.isToggle
+    // })
   }
-  
+
   touchmove(e: any) {
     const { x, y } = e.touches[0];
 

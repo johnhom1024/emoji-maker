@@ -40,7 +40,6 @@ class DragImage {
 
   // 将该图片画在画布中
   paint() {
-    this.ctx.save();
     this.ctx.drawImage(this.imageEl, this.x, this.y, this.width, this.height)
     // 如果为选中状态，则画出虚线边框
     if (this.selected) {
@@ -53,7 +52,7 @@ class DragImage {
       // this.ctx.stroke();
     }
 
-    this.ctx.restore();
+    // this.ctx.restore();
   }
 
   // 鼠标点下时，是否处于该图片内部
@@ -66,9 +65,11 @@ class DragImage {
 
     if (x >= this.x && x <= rightX && y >= this.y && y <= bottomY) {
       this.selected = true;
-      return;
+    } else {
+      this.selected = false;
     }
-    this.selected = false;
+    
+    return this.selected;
   }
 
 }
