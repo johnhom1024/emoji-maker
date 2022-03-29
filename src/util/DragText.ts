@@ -4,34 +4,43 @@
  * @LastEditors: handsome_anthony
  * @Description: 
  */
-class DragText {
+
+import DragItem from '@/util/extends/DragItem';
+class DragText extends DragItem {
   // 文字
   text: string = '';
-  x: number = 0;
-  y: number = 0;
-  selected = true;
-  ctx: CanvasRenderingContext2D
 
   constructor({
     text = '',
+    width = 0,
+    height = 48,
     x = 0,
     y = 0,
-    ctx = {} as CanvasRenderingContext2D
+    ctx = {} as CanvasRenderingContext2D,
   }: Partial<{
     text: string,
+    width: number,
+    height: number,
     x: number,
     y: number,
     ctx: CanvasRenderingContext2D,
   }>) {
-    this.text = text,
-    this.x = x;
-    this.y = y;
-    this.ctx = ctx;
+    super({ width, height, x, y, ctx });
+    this.text = text;
   }
 
   paint() {
     this.ctx.font = "48px sans-serif";
     this.ctx.fillText(this.text, this.x, this.y);
+
+    if (this.selected) {
+      // 设置外框
+      this.ctx.setLineDash([10, 10]);
+      this.ctx.lineDashOffset = 10;
+      this.ctx.strokeStyle = 'red';
+      // 生成一个矩形
+      this.ctx.strokeRect(this.x, this.y, this.width, this.height);
+    }
   }
 }
 

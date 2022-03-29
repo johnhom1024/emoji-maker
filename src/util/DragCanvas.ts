@@ -6,6 +6,7 @@
  */
 
 import { createImage, getScale } from "@/util";
+import DragItem from '@/util/extends/DragItem';
 import DragImage from './DragImage';
 import DragText from './DragText';
 class DragCanvas {
@@ -19,10 +20,8 @@ class DragCanvas {
   clickInitialX = 0;
   clickInitialY = 0;
 
-  // 画布中的图片
-  imgArray: Array<DragImage> = [];
-
-  textArray: Array<DragText> = [];
+  // 画布中的物体数组
+  dragArray: Array<DragItem> = [];
 
   // canvasClassIdName: 为canvas画布的节点类名id
   constructor(canvasClassIdName: string) {
@@ -84,29 +83,30 @@ class DragCanvas {
 
     const dragImage = new DragImage({ imageEl, x, y, width: width * scale, height: height * scale, ctx: this.ctx })
 
-    // 将imagepush进imgArray中
-    this.imgArray.push(dragImage)
+    // 将image push进dragArray中
+    this.dragArray.push(dragImage)
 
     dragImage.paint();
   }
 
-  // 画出imgArray中的每个图片，和textArray中的每个文字
+  // 画出dragArray中的每个物体
   paint() {
-    this.imgArray.forEach(dragImage => {
-      dragImage.paint();
-    });
 
-    this.textArray.forEach(dragText => {
-      dragText.paint();
+    this.dragArray.forEach(dragItem => {
+      dragItem.paint();
     })
   }
 
   fillText(text: string) {
     const x = 100;
     const y = 100;
-    const textItem = new DragText({ text, x, y, ctx: this.ctx });
+    const width = this.ctx.measureText(text).width * this.pixelRatio;
+    
+    console.log(this.ctx.measureText(text));
+    
+    const textItem = new DragText({ text: `${text}宽度为${width}`, width, x, y, ctx: this.ctx });
 
-    this.textArray.push(textItem);
+    this.dragArray.push(textItem);
     textItem.paint();
   }
 
@@ -117,8 +117,7 @@ class DragCanvas {
 
   // 清空画布
   clearCanvas() {
-    this.imgArray = [];
-    this.textArray = [];
+    this.dragArray = [];
     this.clearRect();
   }
 
@@ -134,33 +133,22 @@ class DragCanvas {
     this.clearRect();
     // 重新渲染
     let isSelected = false;
-    // this.imgArray.forEach(imgObj => {
-    //   // 如果为true，则终止
-    //   if (!selectedItem) {
-    //     selectedItem = imgObj.isToggle(this.clickInitialX, this.clickInitialY);
-    //   }
-    //   imgObj.paint();
-    // })
 
     // 倒过来遍历数组
-    for (let index = this.imgArray.length - 1; index >= 0; index--) {
-      const imgItem = this.imgArray[index];
+    for (let index = this.dragArray.length - 1; index >= 0; index--) {
+      const dragItem = this.dragArray[index];
 
       if (!isSelected) {
-        isSelected = imgItem.isToggle(this.clickInitialX, this.clickInitialY);
+        isSelected = dragItem.isToggleInside(this.clickInitialX, this.clickInitialY);
       } else {
         // 剩余的图片要取消选中
-        imgItem.selected = false;
+        dragItem.selected = false;
       }
     }
 
-    this.imgArray.forEach(imgObj => {
-      imgObj.paint();
+    this.dragArray.forEach(dragItem => {
+      dragItem.paint();
     })
-
-    // this.textArray.forEach(textObj => {
-    //   // textObj.isToggle
-    // })
   }
 
   touchmove(e: any) {
@@ -170,9 +158,9 @@ class DragCanvas {
     const diffX = x * this.pixelRatio - this.clickInitialX;
     const diffY = y * this.pixelRatio - this.clickInitialY;
 
-    // 调整imgArray中的图片位置
-    this.imgArray.forEach(imgObj => {
-      const { x: positionX, y: positionY, selected = false } = imgObj;
+    // 调整dragArray中的图片位置
+    this.dragArray.forEach(dragItem => {
+      const { x: positionX, y: positionY, selected = false } = dragItem;
 
       if (!selected) {
         return;
@@ -180,21 +168,11 @@ class DragCanvas {
       const finalX = positionX + diffX;
       const finalY = positionY + diffY;
 
-      imgObj.x = finalX;
-      imgObj.y = finalY;
+      dragItem.x = finalX;
+      dragItem.y = finalY;
     })
 
-    this.textArray.forEach(textObj => {
-      const { x: positionX, y: positionY } = textObj;
-
-      const finalX = positionX + diffX;
-      const finalY = positionY + diffY;
-
-      textObj.x = finalX;
-      textObj.y = finalY;
-    })
-
-    // 画出imgArray中的图片
+    // 画出dragArray中的图片
 
     this.clickInitialX = x * this.pixelRatio;
     this.clickInitialY = y * this.pixelRatio;

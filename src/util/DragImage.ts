@@ -5,15 +5,11 @@
  * @Description: 
  */
 
-class DragImage {
+import DragItem from '@/util/extends/DragItem';
+
+class DragImage extends DragItem {
   // img的dom节点
   imageEl: CanvasImageSource;
-  width: number = 0;
-  height: number = 0;
-  x: number = 0;
-  y: number = 0;
-  selected = true;
-  ctx: CanvasRenderingContext2D
 
   constructor({
     imageEl = {} as CanvasImageSource,
@@ -30,12 +26,8 @@ class DragImage {
     y: number,
     ctx: CanvasRenderingContext2D,
   }>) {
+    super({ width, height, x, y, ctx });
     this.imageEl = imageEl;
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
-    this.ctx = ctx;
   }
 
   // 将该图片画在画布中
@@ -53,23 +45,6 @@ class DragImage {
     }
 
     // this.ctx.restore();
-  }
-
-  // 鼠标点下时，是否处于该图片内部
-  isToggle(x:number, y:number) {
-    // 图片最右边的X坐标
-    const rightX = this.x + this.width;
-    // 图片最底部的Y坐标
-    const bottomY = this.y + this.height;
-
-
-    if (x >= this.x && x <= rightX && y >= this.y && y <= bottomY) {
-      this.selected = true;
-    } else {
-      this.selected = false;
-    }
-    
-    return this.selected;
   }
 
 }
