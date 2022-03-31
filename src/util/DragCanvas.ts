@@ -100,11 +100,8 @@ class DragCanvas {
   fillText(text: string) {
     const x = 100;
     const y = 100;
-    const width = this.ctx.measureText(text).width * this.pixelRatio;
     
-    console.log(this.ctx.measureText(text));
-    
-    const textItem = new DragText({ text: `${text}宽度为${width}`, width, x, y, ctx: this.ctx });
+    const textItem = new DragText({ text, x, y, ctx: this.ctx });
 
     this.dragArray.push(textItem);
     textItem.paint();

@@ -12,25 +12,26 @@ class DragText extends DragItem {
 
   constructor({
     text = '',
-    width = 0,
     height = 48,
     x = 0,
     y = 0,
     ctx = {} as CanvasRenderingContext2D,
   }: Partial<{
     text: string,
-    width: number,
     height: number,
     x: number,
     y: number,
     ctx: CanvasRenderingContext2D,
   }>) {
-    super({ width, height, x, y, ctx });
+    super({ width: 0, height, x, y, ctx });
+    // 在使用measureText之前先设置好font
+    this.initFontConfig();
+    const width = ctx.measureText(text).width;
+    this.width = width;
     this.text = text;
   }
 
   paint() {
-    this.ctx.font = "48px sans-serif";
     this.ctx.fillText(this.text, this.x, this.y);
 
     if (this.selected) {
@@ -41,6 +42,13 @@ class DragText extends DragItem {
       // 生成一个矩形
       this.ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
+  }
+
+  initFontConfig() {
+    // 基线在文字上那个
+    this.ctx.textBaseline = 'hanging';
+    // 设置字体大小和字体
+    this.ctx.font = "48px sans-serif";
   }
 }
 
