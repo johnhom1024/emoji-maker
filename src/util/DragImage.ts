@@ -5,11 +5,17 @@
  * @Description: 
  */
 
+// util
 import DragItem from '@/util/extends/DragItem';
+import { createImage } from '@/util';
 
+// image
+const CloseIcon = '/static/image/close.png';
+const ScaleIcon = '/static/image/transform.png';
 class DragImage extends DragItem {
   // img的dom节点
   imageEl: CanvasImageSource;
+  canvas: object;
 
   constructor({
     imageEl = {} as CanvasImageSource,
@@ -17,7 +23,8 @@ class DragImage extends DragItem {
     height = 0,
     x = 0,
     y = 0,
-    ctx = {} as CanvasRenderingContext2D
+    ctx = {} as CanvasRenderingContext2D,
+    canvas = {}
   }: Partial<{
     imageEl: CanvasImageSource,
     width: number,
@@ -25,9 +32,11 @@ class DragImage extends DragItem {
     x: number,
     y: number,
     ctx: CanvasRenderingContext2D,
+    canvas: object,
   }>) {
     super({ width, height, x, y, ctx });
     this.imageEl = imageEl;
+    this.canvas = canvas;
   }
 
   // 将该图片画在画布中
@@ -42,9 +51,23 @@ class DragImage extends DragItem {
       // 生成一个矩形
       this.ctx.strokeRect(this.x, this.y, this.width, this.height);
       // this.ctx.stroke();
+      this.drawCloseIcon();
     }
 
     // this.ctx.restore();
+  }
+
+  drawCloseIcon() {
+    uni.getImageInfo({
+      src: CloseIcon,
+      success: async (imageInfo) => {
+        const { width, height } = imageInfo;
+      },
+    })
+  }
+
+  static initIcon() {
+    
   }
 
 }

@@ -71,6 +71,24 @@ class DragCanvas {
         })
       })
     });
+
+    uni.getImageInfo({
+      src: '/static/image/close.png',
+      success: async (closeIconInfo) => {
+        const { width, height, path } = closeIconInfo;
+        console.log(closeIconInfo);
+
+        
+        // // console.log(closeIconInfo);
+        const closeIconEl = await createImage('/' + path, this.canvas);
+        this.drawImg(closeIconEl, width, height)
+      },
+      fail: (err) => {
+        console.log(err);
+        
+      }
+    })
+
   }
 
   // 将图片画到canvas中
@@ -81,7 +99,7 @@ class DragCanvas {
 
     const scale = getScale(width, height);
 
-    const dragImage = new DragImage({ imageEl, x, y, width: width * scale, height: height * scale, ctx: this.ctx })
+    const dragImage = new DragImage({ imageEl, x, y, width: width * scale, height: height * scale, ctx: this.ctx, canvas: this.canvas })
 
     // 将image push进dragArray中
     this.dragArray.push(dragImage)

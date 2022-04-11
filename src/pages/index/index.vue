@@ -27,10 +27,7 @@
       </view>
       <view class="input-wrapper mb-20 flex align-center">
         <view class="w-60 mr-20">
-          <a-input
-            placeholder="请输入内容"
-            v-model="inputText"
-          ></a-input>
+          <a-input placeholder="请输入内容" v-model="inputText"></a-input>
         </view>
         <a-button @click="addText">加上文字</a-button>
       </view>
