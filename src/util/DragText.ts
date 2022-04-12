@@ -46,7 +46,7 @@ class DragText extends DragItem {
 
   initFontConfig() {
     // 基线在文字上那个
-    this.ctx.textBaseline = 'hanging';
+    this.ctx.textBaseline = 'top';
     // 设置字体大小和字体
     this.ctx.font = "48px sans-serif";
   }
