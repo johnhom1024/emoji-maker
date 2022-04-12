@@ -71,24 +71,6 @@ class DragCanvas {
         })
       })
     });
-
-    uni.getImageInfo({
-      src: '/static/image/close.png',
-      success: async (closeIconInfo) => {
-        const { width, height, path } = closeIconInfo;
-        console.log(closeIconInfo);
-
-        
-        // // console.log(closeIconInfo);
-        const closeIconEl = await createImage('/' + path, this.canvas);
-        this.drawImg(closeIconEl, width, height)
-      },
-      fail: (err) => {
-        console.log(err);
-        
-      }
-    })
-
   }
 
   // 将图片画到canvas中

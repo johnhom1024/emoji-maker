@@ -10,12 +10,28 @@ import DragItem from '@/util/extends/DragItem';
 import { createImage } from '@/util';
 
 // image
-const CloseIcon = '/static/image/close.png';
-const ScaleIcon = '/static/image/transform.png';
+const CloseIcon = '/static/close.png';
+const ScaleIcon = '/static/transform.png';
 class DragImage extends DragItem {
   // img的dom节点
   imageEl: CanvasImageSource;
   canvas: object;
+
+  // 静态属性
+  // 关闭icon的dom节点
+  static closeIconObj: {
+    el?: object,
+    path: string,
+    width: number,
+    height: number,
+  }
+
+  static scaleIconObj: {
+    path: string,
+    width: number,
+    height: number,
+  }
+
 
   constructor({
     imageEl = {} as CanvasImageSource,
@@ -57,19 +73,50 @@ class DragImage extends DragItem {
     // this.ctx.restore();
   }
 
-  drawCloseIcon() {
-    uni.getImageInfo({
-      src: CloseIcon,
-      success: async (imageInfo) => {
-        const { width, height } = imageInfo;
-      },
-    })
+  async drawCloseIcon() {
+    const { el, path, width, height } = DragImage.closeIconObj;
+    let closeIconEl = null;
+    if (!el) {
+      closeIconEl = await createImage(path, this.canvas);
+      DragImage.closeIconObj.el = closeIconEl;
+    } else {
+      closeIconEl = el;
+    }
+
+    this.ctx.drawImage(closeIconEl, this.x - width / 2, this.y - height / 2, width, height);
   }
 
   static initIcon() {
-    
-  }
 
+    // 获取closeIcon的信息
+    uni.getImageInfo({
+      src: CloseIcon,
+      success: (imageInfo) => {
+        const { width, height } = imageInfo;
+        DragImage.closeIconObj = {
+          path: CloseIcon,
+          width,
+          height
+        }
+      }
+    })
+
+    // 获取scale-icon的信息
+    uni.getImageInfo({
+      src: ScaleIcon,
+      success: (imageInfo) => {
+        const { width, height } = imageInfo;
+        DragImage.scaleIconObj = {
+          path: ScaleIcon,
+          width,
+          height,
+        }
+      }
+    })
+  }
 }
+
+// 初始化静态变量
+DragImage.initIcon();
 
 export default DragImage;
