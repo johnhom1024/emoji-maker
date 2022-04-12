@@ -13,6 +13,7 @@
         id="canvas"
         class="canvas-container"
         style="width: 100%; height: 100%"
+        :disable-scroll="true"
         @touchstart="handleTouchstart"
         @touchmove="handleTouchmove"
       ></canvas>
