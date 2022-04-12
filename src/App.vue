@@ -17,4 +17,5 @@
 <style lang="scss">
 @import '~@/assets/scss/public.scss';
 @import "uview-ui/index.scss";
+@import '~@/assets/scss/uview.scss';
 </style>

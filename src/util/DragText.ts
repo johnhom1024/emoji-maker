@@ -12,7 +12,7 @@ class DragText extends DragItem {
 
   constructor({
     text = '',
-    height = 48,
+    height = 90,
     x = 0,
     y = 0,
     ctx = {} as CanvasRenderingContext2D,
@@ -45,10 +45,12 @@ class DragText extends DragItem {
   }
 
   initFontConfig() {
+    const fontHeight = 80;
     // 基线在文字上那个
     this.ctx.textBaseline = 'top';
     // 设置字体大小和字体
-    this.ctx.font = "48px sans-serif";
+    this.ctx.font = `${fontHeight}px sans-serif`;
+    this.height = fontHeight;
   }
 }
 
