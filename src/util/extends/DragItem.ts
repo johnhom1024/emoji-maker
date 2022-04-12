@@ -43,20 +43,18 @@ abstract class DragItem {
   abstract paint(): void;
 
   // 鼠标点下时，是否处于物体内部
-  isToggleInside(x: number, y: number): boolean {
-     // 图片最右边的X坐标
-     const rightX = this.x + this.width;
-     // 图片最底部的Y坐标
-     const bottomY = this.y + this.height;
- 
- 
-     if (x >= this.x && x <= rightX && y >= this.y && y <= bottomY) {
-       this.selected = true;
-     } else {
-       this.selected = false;
-     }
- 
-     return this.selected;
+  isInWhere(x: number, y: number): string {
+    // 图片最右边的X坐标
+    const rightX = this.x + this.width;
+    // 图片最底部的Y坐标
+    const bottomY = this.y + this.height;
+
+    let action = 'none';
+    if (x >= this.x && x <= rightX && y >= this.y && y <= bottomY) {
+      action = 'move';
+    }
+
+    return action;
   };
 
 

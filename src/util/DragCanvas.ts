@@ -7,6 +7,7 @@
 
 import { createImage, getScale } from "@/util";
 import DragItem from '@/util/extends/DragItem';
+import { stringifyStyle } from "@vue/shared";
 import DragImage from './DragImage';
 import DragText from './DragText';
 class DragCanvas {
@@ -128,24 +129,43 @@ class DragCanvas {
 
     // 先清除画布
     this.clearRect();
-    // 重新渲染
-    let isSelected = false;
 
-    // 倒过来遍历数组
-    for (let index = this.dragArray.length - 1; index >= 0; index--) {
-      const dragItem = this.dragArray[index];
+    let selectedItem = {
+      obj: {} as DragItem,
+      action: 'none',
+      index: 0,
+    }
+    this.dragArray.forEach((item, index) => {
+      // 先将所有的拖拽元素selected属性设置为false
+      item.selected = false;
+      
+      // 将最后一个处于选中区域的元素赋值给lastItem
+      const action = item.isInWhere(this.clickInitialX, this.clickInitialY);
+      if (action !== 'none') {
+        selectedItem = {
+          obj: item,
+          action,
+          index,
+        }
+      }
+    })
+    
+    // 如果lastItem不为空对象
+    if (Object.keys(selectedItem.obj)) {
+      selectedItem.obj.selected = true;
 
-      if (!isSelected) {
-        isSelected = dragItem.isToggleInside(this.clickInitialX, this.clickInitialY);
-      } else {
-        // 剩余的图片要取消选中
-        dragItem.selected = false;
+      switch (selectedItem.action) {
+        case 'close':
+          // 删除对应的元素
+          this.dragArray.splice(selectedItem.index, 1);
+          break;
+      
+        default:
+          break;
       }
     }
 
-    this.dragArray.forEach(dragItem => {
-      dragItem.paint();
-    })
+    this.paint();
   }
 
   touchmove(e: any) {

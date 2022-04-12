@@ -86,6 +86,24 @@ class DragImage extends DragItem {
     this.ctx.drawImage(closeIconEl, this.x - width / 2, this.y - height / 2, width, height);
   }
 
+  // 鼠标点下时，是否处于当前图片内部
+  isInWhere(x: number, y: number): string {
+    let action = super.isInWhere(x, y);
+
+    // 判断点击位置是否处于closeIcon区域内
+    const { el, path, width, height } = DragImage.closeIconObj;
+    const closeX = this.x - width / 2;
+    const closeY = this.y - height / 2;
+
+    // 如果为true，则说明鼠标点击到了删除按钮
+    if (x >= closeX && x <= closeX + width && y >= closeY && y <= closeY + height) {
+      action = 'close';
+    }
+
+    return action;
+
+  }
+
   static initIcon() {
 
     // 获取closeIcon的信息
