@@ -12,18 +12,16 @@ class DragText extends DragItem {
 
   constructor({
     text = '',
-    height = 90,
     x = 0,
     y = 0,
     ctx = {} as CanvasRenderingContext2D,
   }: Partial<{
     text: string,
-    height: number,
     x: number,
     y: number,
     ctx: CanvasRenderingContext2D,
   }>) {
-    super({ width: 0, height, x, y, ctx });
+    super({ width: 0, height: 0, x, y, ctx });
     // 在使用measureText之前先设置好font
     this.initFontConfig();
     const width = ctx.measureText(text).width;
