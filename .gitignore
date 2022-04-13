@@ -2,6 +2,7 @@
 node_modules/
 unpackage/
 dist/
+project.private.config.json
 
 # local env files
 .env.local

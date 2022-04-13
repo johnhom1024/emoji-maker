@@ -47,5 +47,11 @@
   "libVersion": "2.23.2",
   "appid": "wxf3c89b221d4798b7",
   "projectname": "emoji-maker",
-  "miniprogramRoot": "dist/dev/mp-weixin/"
+  "miniprogramRoot": "dist/dev/mp-weixin/",
+  "srcMiniprogramRoot": "dist/dev/mp-weixin/",
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }
