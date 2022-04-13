@@ -20,7 +20,7 @@ class DragImage extends DragItem {
   // 静态属性
   // 关闭icon的dom节点
   static closeIconObj: {
-    el?: object,
+    el?: CanvasImageSource,
     path: string,
     width: number,
     height: number,
@@ -75,7 +75,7 @@ class DragImage extends DragItem {
 
   async drawCloseIcon() {
     const { el, path, width, height } = DragImage.closeIconObj;
-    let closeIconEl = null;
+    let closeIconEl = {} as CanvasImageSource;
     if (!el) {
       closeIconEl = await createImage(path, this.canvas);
       DragImage.closeIconObj.el = closeIconEl;

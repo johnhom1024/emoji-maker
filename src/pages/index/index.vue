@@ -21,69 +21,64 @@
     <!-- 操作 -->
     <view class="operation">
       <view class="mb-20">
-        <a-button type="primary" @click="chooseImage"> 选择图片 </a-button>
+        <u-button type="primary" @click="chooseImage"> 选择图片 </u-button>
       </view>
       <view class="mb-20">
-        <a-button type="error" @click="clearCanvas"> 清除画布 </a-button>
+        <u-button type="error" @click="clearCanvas"> 清除画布 </u-button>
       </view>
       <view class="input-wrapper mb-20 flex align-center">
         <view class="w-60 mr-20">
-          <a-input placeholder="请输入内容" v-model="inputText"></a-input>
+          <u--input placeholder="请输入内容" v-model="inputText"></u--input>
         </view>
-        <a-button @click="addText">加上文字</a-button>
+        <u-button @click="addText">加上文字</u-button>
       </view>
-      <a-button type="success" @click="save">生成图片</a-button>
+      <u-button type="success" @click="save">生成图片</u-button>
     </view>
   </view>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
 import DragCanvas from "@/util/DragCanvas";
-import aInput from "uview-ui/components/u--input/u--input.vue";
-import aButton from "uview-ui/components/u-button/u-button.vue";
-export default {
-  components: {
-    aInput,
-    aButton,
-  },
-  data() {
-    return {
-      dragCanvasInstance: null,
-      inputText: "",
-    };
-  },
+
+@Component
+export default class CanvasIndex extends Vue {
+  dragCanvasInstance = {} as DragCanvas;
+  inputText = "";
+
+
   onLoad() {
     this.dragCanvasInstance = new DragCanvas("#canvas");
-  },
-  methods: {
-    chooseImage() {
-      this.dragCanvasInstance.chooseImage();
-    },
-    handleTouchstart(e) {
-      this.dragCanvasInstance.touchstart(e);
-    },
-    clearCanvas() {
-      this.dragCanvasInstance.clearCanvas();
-    },
-    handleTouchmove(e) {
-      this.dragCanvasInstance.touchmove(e);
-    },
-    save() {
-      uni.showModal({
-        title: "提示",
-        content: "制作的表情包将保存到手机相册",
-        success: (res) => {
-          if (res.confirm) {
-            this.dragCanvasInstance.save();
-          }
-        },
-      });
-    },
-    addText() {
-      this.dragCanvasInstance.fillText(this.inputText, 10, 10);
-    },
-  },
-};
+  }
+
+
+  chooseImage(): void {
+    this.dragCanvasInstance.chooseImage();
+  }
+  handleTouchstart(e) {
+    this.dragCanvasInstance.touchstart(e);
+  }
+  clearCanvas() {
+    this.dragCanvasInstance.clearCanvas();
+  }
+  handleTouchmove(e) {
+    this.dragCanvasInstance.touchmove(e);
+  }
+  save() {
+    uni.showModal({
+      title: "提示",
+      content: "制作的表情包将保存到手机相册",
+      success: (res) => {
+        if (res.confirm) {
+          this.dragCanvasInstance.save();
+        }
+      },
+    });
+  }
+  addText() {
+    this.dragCanvasInstance.fillText(this.inputText);
+  }
+}
 </script>
 
 <style lang="scss">
