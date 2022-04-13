@@ -137,6 +137,13 @@ class DragCanvas {
     // 先清除画布
     this.clearRect();
 
+    // 清空已选的元素
+    this.selectedDragItem = {
+      obj: {} as DragItem,
+      index: 0,
+      action: 'none'
+    }
+
     this.dragArray.forEach((item, index) => {
       // 先将所有的拖拽元素selected属性设置为false
       item.selected = false;

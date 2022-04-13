@@ -24,6 +24,7 @@ abstract class DragItem {
   centerX: number = 0;
   centerY: number = 0;
   selected: boolean = true;
+  // 旋转的角度
   rotate: number = 0;
   ctx: CanvasRenderingContext2D
 
@@ -53,6 +54,12 @@ abstract class DragItem {
     const rightX = this.x + this.width;
     // 图片最底部的Y坐标
     const bottomY = this.y + this.height;
+
+    // 判断当前物体是否有旋转，如果有，则将点击的x,y坐标也根据物体中心旋转，得到的新xy坐标再判断是否处于物体内部
+
+    if (this.rotate !== 0) {
+      
+    }
 
     let action = 'none';
     if (x >= this.x && x <= rightX && y >= this.y && y <= bottomY) {

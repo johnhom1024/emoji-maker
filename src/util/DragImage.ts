@@ -82,7 +82,7 @@ class DragImage extends DragItem {
     this.centerY = this.y + this.height / 2;
     // 变更原点至图片的中点
     this.ctx.translate(this.centerX, this.centerY);
-    //根据transform的旋转角度旋转坐标轴
+    //根据transform的旋转角度旋转坐标轴 角度 * PI / 180 得到弧度
     this.ctx.rotate(this.rotate * Math.PI / 180);
     //变更回来
     this.ctx.translate(-this.centerX, -this.centerY);
