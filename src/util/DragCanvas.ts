@@ -7,7 +7,6 @@
 
 import { createImage, getScale } from "@/util";
 import DragItem from '@/util/extends/DragItem';
-import { stringifyStyle } from "@vue/shared";
 import DragImage from './DragImage';
 import DragText from './DragText';
 class DragCanvas {
