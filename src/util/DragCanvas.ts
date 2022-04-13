@@ -9,8 +9,9 @@ import { createImage, getScale } from "@/util";
 import DragItem from '@/util/extends/DragItem';
 import DragImage from './DragImage';
 import DragText from './DragText';
+import { isEmpty } from 'lodash-es';
 class DragCanvas {
-  ctx: CanvasRenderingContext2D = {} as CanvasRenderingContext2D;
+  ctx = {} as CanvasRenderingContext2D;
   canvas = {};
   canvasWidth = 0;
   canvasHeight = 0;
@@ -19,6 +20,13 @@ class DragCanvas {
   // 记录鼠标点下的坐标
   clickInitialX = 0;
   clickInitialY = 0;
+
+
+  selectedDragItem = {
+    obj: {} as DragItem,
+    action: 'none',
+    index: 0,
+  }
 
   // 画布中的物体数组
   dragArray: Array<DragItem> = [];
@@ -100,7 +108,7 @@ class DragCanvas {
   fillText(text: string) {
     const x = 100;
     const y = 100;
-    
+
     const textItem = new DragText({ text, x, y, ctx: this.ctx });
 
     this.dragArray.push(textItem);
@@ -129,36 +137,31 @@ class DragCanvas {
     // 先清除画布
     this.clearRect();
 
-    let selectedItem = {
-      obj: {} as DragItem,
-      action: 'none',
-      index: 0,
-    }
     this.dragArray.forEach((item, index) => {
       // 先将所有的拖拽元素selected属性设置为false
       item.selected = false;
-      
+
       // 将最后一个处于选中区域的元素赋值给lastItem
       const action = item.isInWhere(this.clickInitialX, this.clickInitialY);
       if (action !== 'none') {
-        selectedItem = {
+        this.selectedDragItem = {
           obj: item,
           action,
           index,
         }
       }
     })
-    
-    // 如果lastItem不为空对象
-    if (Object.keys(selectedItem.obj)) {
-      selectedItem.obj.selected = true;
 
-      switch (selectedItem.action) {
+    // 如果lastItem不为空对象
+    if (Object.keys(this.selectedDragItem.obj)) {
+      this.selectedDragItem.obj.selected = true;
+
+      switch (this.selectedDragItem.action) {
         case 'close':
           // 删除对应的元素
-          this.dragArray.splice(selectedItem.index, 1);
+          this.dragArray.splice(this.selectedDragItem.index, 1);
           break;
-      
+
         default:
           break;
       }
@@ -168,30 +171,44 @@ class DragCanvas {
   }
 
   touchmove(e: any) {
-    const { x, y } = e.touches[0];
+    let { x, y } = e.touches[0];
 
+    x = x * this.pixelRatio;
+    y = y * this.pixelRatio;
     // 水平移动的距离
-    const diffX = x * this.pixelRatio - this.clickInitialX;
-    const diffY = y * this.pixelRatio - this.clickInitialY;
+    const diffX = x - this.clickInitialX;
+    const diffY = y - this.clickInitialY;
 
-    // 调整dragArray中的图片位置
-    this.dragArray.forEach(dragItem => {
-      const { x: positionX, y: positionY, selected = false } = dragItem;
+    // 处理action
+    const { action, obj } = this.selectedDragItem;
+    if (!isEmpty(obj)) {
+      const { x: positionX, y: positionY, centerX, centerY, rotate } = obj;
+      switch (action) {
+        // 处理旋转
+        case 'transform':
+          //算出手指按下时形成的角度，注意y坐标在第一个参数
+          const angleBefore = Math.atan2(this.clickInitialY - centerY, this.clickInitialX - centerX) / Math.PI * 180;
+          //算出手指移动时形成的角度，注意y坐标在第一个参数
+          const angleAfter = Math.atan2(y - centerY, x - centerX) / Math.PI * 180;
+          // 旋转的角度
+          obj.rotate = rotate + angleAfter - angleBefore;
+          console.log(obj.rotate);
+          break;
+        // 处理移动
+        case 'move':
+          const finalX = positionX + diffX;
+          const finalY = positionY + diffY;
 
-      if (!selected) {
-        return;
+          obj.x = finalX;
+          obj.y = finalY;
+          break;
+        default:
+          break;
       }
-      const finalX = positionX + diffX;
-      const finalY = positionY + diffY;
+    }
 
-      dragItem.x = finalX;
-      dragItem.y = finalY;
-    })
-
-    // 画出dragArray中的图片
-
-    this.clickInitialX = x * this.pixelRatio;
-    this.clickInitialY = y * this.pixelRatio;
+    this.clickInitialX = x;
+    this.clickInitialY = y;
 
     this.clearRect();
     this.paint();

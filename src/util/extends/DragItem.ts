@@ -21,7 +21,10 @@ abstract class DragItem {
   height: number = 0;
   x: number = 0;
   y: number = 0;
+  centerX: number = 0;
+  centerY: number = 0;
   selected: boolean = true;
+  rotate: number = 0;
   ctx: CanvasRenderingContext2D
 
   constructor({
@@ -35,6 +38,8 @@ abstract class DragItem {
     this.height = height;
     this.x = x;
     this.y = y;
+    this.centerX = x + width / 2;
+    this.centerY = y + height / 2;
     this.ctx = ctx;
   }
 

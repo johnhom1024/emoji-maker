@@ -34,7 +34,8 @@ class DragText extends DragItem {
 
     if (this.selected) {
       // 设置外框
-      this.ctx.setLineDash([10, 10]);
+      this.ctx.lineWidth = 3;
+      this.ctx.setLineDash([15, 8]);
       this.ctx.lineDashOffset = 10;
       this.ctx.strokeStyle = 'red';
       // 生成一个矩形
