@@ -105,11 +105,9 @@ class DragCanvas {
     })
   }
 
+  // 在画布的底部中间位置生成文字
   fillText(text: string) {
-    const x = 100;
-    const y = 100;
-
-    const textItem = new DragText({ text, x, y, ctx: this.ctx });
+    const textItem = new DragText({ text, canvasHeight: this.canvasHeight, canvasWidth: this.canvasWidth, ctx: this.ctx });
 
     this.dragArray.push(textItem);
     textItem.paint();
@@ -199,7 +197,6 @@ class DragCanvas {
           const angleAfter = Math.atan2(y - centerY, x - centerX) / Math.PI * 180;
           // 旋转的角度
           obj.rotate = rotate + angleAfter - angleBefore;
-          console.log(obj.rotate);
           break;
         // 处理移动
         case 'move':

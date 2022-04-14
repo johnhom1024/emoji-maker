@@ -6,27 +6,34 @@
  */
 
 import DragItem from '@/util/extends/DragItem';
+
+const fontHeight = 80;
 class DragText extends DragItem {
   // 文字
   text: string = '';
 
   constructor({
     text = '',
-    x = 0,
-    y = 0,
+    canvasWidth = 0,
+    canvasHeight = 0,
     ctx = {} as CanvasRenderingContext2D,
   }: Partial<{
     text: string,
-    x: number,
-    y: number,
+    canvasWidth: number,
+    canvasHeight: number,
     ctx: CanvasRenderingContext2D,
   }>) {
-    super({ width: 0, height: 0, x, y, ctx });
+    super({ width: 0, height: 0, x: 0, y: 0, ctx });
     // 在使用measureText之前先设置好font
     this.initFontConfig();
     const width = ctx.measureText(text).width;
     this.width = width;
     this.text = text;
+
+    // 设置文字的初始位置 在画布的中下方
+    this.x = canvasWidth / 2  - width / 2;
+    this.y = canvasHeight - 50 - fontHeight / 2;
+
   }
 
   paint() {
@@ -44,8 +51,7 @@ class DragText extends DragItem {
   }
 
   initFontConfig() {
-    const fontHeight = 80;
-    // 基线在文字上那个
+    // 基线在文字上
     this.ctx.textBaseline = 'top';
     // 设置字体大小和字体
     this.ctx.font = `${fontHeight}px sans-serif`;
