@@ -7,7 +7,7 @@
 
 // util
 import DragItem from '@/util/extends/DragItem';
-import { createImage } from '@/util';
+import { createImage, isPointInRect } from '@/util';
 
 // image
 const CloseIcon = '/static/close.png';
@@ -100,8 +100,8 @@ class DragImage extends DragItem {
       // this.ctx.stroke();
       this.drawCloseIcon();
       this.drawScaleIcon();
-    }
 
+    }
     this.ctx.restore();
   }
 
@@ -118,7 +118,7 @@ class DragImage extends DragItem {
         inited: true,
       }
     }
-    
+
     // 初始化实例内部的closeIcon
     if (!this.closeIconObj.path) {
       const { path, width, height } = DragImage.closeIconInfo;
@@ -155,8 +155,8 @@ class DragImage extends DragItem {
       }
     }
 
-     // 初始化实例内部的closeIcon
-     if (!this.scaleIconObj.path) {
+    // 初始化实例内部的closeIcon
+    if (!this.scaleIconObj.path) {
       const { width, height, path } = DragImage.scaleIconInfo;
       // 初始化变量
       this.scaleIconObj = {
@@ -201,25 +201,56 @@ class DragImage extends DragItem {
     // 判断点击位置是否处于closeIcon区域内
     const { x: closeX, y: closeY, width, height } = this.closeIconObj;
 
-    // 如果为true，则说明鼠标点击到了删除按钮
-    if (x >= closeX && x <= closeX + width && y >= closeY && y <= closeY + height) {
-      return true;
-    }
-
-    return false;
+    return isPointInRect({
+      touch: {
+        x,
+        y,
+      },
+      rect: {
+        x: closeX,
+        y: closeY,
+        width,
+        height,
+      },
+      centerPoint: {
+        x: this.centerX,
+        y: this.centerY,
+      },
+      rotate: this.rotate
+    })
   }
 
   // 如果为true，则说明鼠标点击到了scaleIcon区域内
   isInScaleIcon(x: number, y: number): boolean {
     const { x: scaleX, y: scaleY, width, height } = this.scaleIconObj;
 
+    return isPointInRect({
+      touch: {
+        x,
+        y,
+      },
+      rect: {
+        x: scaleX,
+        y: scaleY,
+        width,
+        height,
+      },
+      centerPoint: {
+        x: this.centerX,
+        y: this.centerY,
+      },
+      rotate: this.rotate
+    })
+  }
 
-    // 如果为true，则说明鼠标点击到了scale按钮
-    if (x >= scaleX && x <= scaleX + width && y >= scaleY && y <= scaleY + height) {
-      return true;
-    }
+  drawScaleIconTopLeftPoint() {
+    const { x: scaleX, y: scaleY } = this.scaleIconObj;
 
-    return false;
+    const [endX, endY] = this.getEndPointByRotate(scaleX, scaleY);
+
+    this.ctx.beginPath();
+    this.ctx.arc(endX, endY, 10, 0, 2 * Math.PI);
+    this.ctx.stroke();
   }
 
   static initIcon() {
@@ -254,7 +285,7 @@ class DragImage extends DragItem {
     return new Promise((resolve, reject) => {
       uni.getImageInfo({
         src: ScaleIcon,
-        success: async(imageInfo) => {
+        success: async (imageInfo) => {
           const { width, height } = imageInfo;
 
           DragImage.scaleIconInfo = {

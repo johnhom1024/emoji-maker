@@ -76,7 +76,7 @@ abstract class DragItem {
  * @return {boolean} 
  */
   isPointInRect(touchX: number, touchY: number) {
-    // 长方形的四个点的坐标
+    // 长方形的四个点的坐标(已经过旋转处理)
     const [x1, y1] = this.topLeft;
     const [x2, y2] = this.topRight;
     const [x3, y3] = this.bottomLeft;
@@ -130,12 +130,28 @@ abstract class DragItem {
     return this.getEndPointByRotate(x, y);
   }
 
+  // 获得坐标经过物体中心旋转之后的新坐标
   getEndPointByRotate(startX, startY) {
     const radian = this.rotate * Math.PI / 180;
     const [x1, y1] = [startX - this.centerX, startY - this.centerY];
     const x2 = x1 * Math.cos(radian) - y1 * Math.sin(radian);
     const y2 = x1 * Math.sin(radian) + y1 * Math.cos(radian);
     return [x2 + this.centerX, y2 + this.centerY];
+  }
+
+  drawTopRightPoint() {
+    const [x, y] = this.topRight;
+    this.ctx.beginPath();
+
+    this.ctx.arc(x, y, 10, 0, 2 * Math.PI);
+    this.ctx.stroke();
+  }
+
+  drawBottomLeftPoint() {
+    const [x, y] = this.bottomLeft;
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, 10, 0, 2 * Math.PI);
+    this.ctx.stroke();
   }
 
 }
