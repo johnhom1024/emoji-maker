@@ -7,6 +7,7 @@
 
 import { createImage, getScale } from "@/util";
 import DragItem from '@/util/extends/DragItem';
+import DragCustomEvent from './DragCustomEvent';
 import DragImage from './DragImage';
 import DragText from './DragText';
 import { isEmpty } from 'lodash-es';
@@ -16,6 +17,9 @@ class DragCanvas {
   canvasWidth = 0;
   canvasHeight = 0;
   pixelRatio = 1;
+
+  // 拖拽点击事件
+  dragCustomEvent = {} as DragCustomEvent;
 
   // 记录鼠标点下的坐标
   clickInitialX = 0;
@@ -33,6 +37,8 @@ class DragCanvas {
 
   // canvasClassIdName: 为canvas画布的节点类名id
   constructor(canvasClassIdName: string) {
+    // 初始化自定义的订阅发布事件
+    this.dragCustomEvent = new DragCustomEvent();
     // 获取当前设备的pixelRatio
     this.pixelRatio = wx.getSystemInfoSync().pixelRatio;
     // 获取canvas画布的对象
@@ -99,18 +105,17 @@ class DragCanvas {
 
   // 画出dragArray中的每个物体
   paint() {
-
     this.dragArray.forEach(dragItem => {
       dragItem.paint();
     })
   }
 
   // 在画布的底部中间位置生成文字
-  fillText(text: string) {
+  fillText(text: string): DragText {
     const textItem = new DragText({ text, canvasHeight: this.canvasHeight, canvasWidth: this.canvasWidth, ctx: this.ctx });
-
     this.dragArray.push(textItem);
     textItem.paint();
+    return textItem;
   }
 
   // 清除画布中的内容
@@ -135,7 +140,7 @@ class DragCanvas {
     // 先清除画布
     this.clearRect();
 
-    // 清空已选的元素
+    // 清空对象
     this.selectedDragItem = {
       obj: {} as DragItem,
       index: 0,
@@ -158,13 +163,17 @@ class DragCanvas {
     })
 
     // 如果lastItem不为空对象
-    if (Object.keys(this.selectedDragItem.obj)) {
-      this.selectedDragItem.obj.selected = true;
+    if (Object.keys(this.selectedDragItem.obj).length) {
+      const { obj, action, index } = this.selectedDragItem;
+      // 设置selected属性为true
+      obj.selected = true;
+      // 发射选中事件      
+      this.dragCustomEvent.emit('selected', obj);
 
-      switch (this.selectedDragItem.action) {
+      switch (action) {
         case 'close':
           // 删除对应的元素
-          this.dragArray.splice(this.selectedDragItem.index, 1);
+          this.dragArray.splice(index, 1);
           break;
 
         default:
@@ -242,8 +251,10 @@ class DragCanvas {
     })
   }
 
-  translate() {
-    this.ctx.translate(100, 100);
+  // 事件订阅
+
+  on(event: string, fn: Function) {
+    return this.dragCustomEvent.on(event, fn);
   }
 
 }

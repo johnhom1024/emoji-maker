@@ -28,7 +28,11 @@
       </view>
       <view class="input-wrapper mb-20 flex align-center">
         <view class="w-60 mr-20">
-          <u--input placeholder="请输入内容" v-model="inputText"></u--input>
+          <u--input
+            placeholder="请输入内容"
+            v-model="inputText"
+            @input="handleInputText"
+          ></u--input>
         </view>
         <u-button @click="addText">加上文字</u-button>
       </view>
@@ -40,17 +44,27 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import DragCanvas from "@/util/DragCanvas";
+import DragText from "@/util/DragText";
+import { isEmpty } from 'lodash-es';
 
 @Component
 export default class CanvasIndex extends Vue {
   dragCanvasInstance = {} as DragCanvas;
   inputText = "";
-
+  // 选中的拖拽文字
+  selectedDragText = {} as DragText;
 
   onLoad() {
     this.dragCanvasInstance = new DragCanvas("#canvas");
+    this.dragCanvasInstance.on("selected", (dragItem) => {
+      // 如果选中的拖拽物体是文字的实例，则获取text属性并且赋值到inputText中
+      if (dragItem instanceof DragText) {
+        const { text = "" } = dragItem;
+        this.selectedDragText = dragItem;
+        this.inputText = text;
+      }
+    });
   }
-
 
   chooseImage(): void {
     this.dragCanvasInstance.chooseImage();
@@ -76,7 +90,19 @@ export default class CanvasIndex extends Vue {
     });
   }
   addText() {
-    this.dragCanvasInstance.fillText(this.inputText);
+    const textItem = this.dragCanvasInstance.fillText(this.inputText);
+
+    this.selectedDragText = textItem;
+  }
+
+  handleInputText() {
+    if (!isEmpty(this.selectedDragText)) {
+      this.selectedDragText.text = this.inputText;
+      // 清除画布
+      this.dragCanvasInstance.clearRect();
+      // 重新绘制
+      this.dragCanvasInstance.paint();
+    }
   }
 }
 </script>

@@ -37,6 +37,7 @@ class DragText extends DragItem {
   }
 
   paint() {
+    this.width = this.ctx.measureText(this.text).width;
     this.ctx.fillText(this.text, this.x, this.y);
 
     if (this.selected) {
