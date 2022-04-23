@@ -79,8 +79,7 @@ class DragCanvas {
           src: tempFilePath,
           success: async (imageInfo) => {
             const { width, height, path } = imageInfo;
-            const imageEl = await createImage(path, this.canvas)
-            this.drawImg(imageEl, width, height);
+            await this.drawImg(path, width, height);
           }
         })
       })
@@ -88,19 +87,30 @@ class DragCanvas {
   }
 
   // 将图片画到canvas中
-  drawImg(imageEl: CanvasImageSource, width: number, height: number) {
+  async drawImg(path: string, width: number, height: number): Promise<DragImage> {
+    width = width * this.pixelRatio;
+    height = height * this.pixelRatio;
+    
+    const imageEl = await createImage(path, this.canvas)
 
-    const x = 0;
-    const y = 0;
+    // 将图片生成在正中间
+    const centerCanvasX = this.canvasWidth / 2;
+    const centerCavnasY = this.canvasHeight / 2;
+
+    const imageX = centerCanvasX - width / 2;
+    const imageY = centerCavnasY - height / 2;
 
     const scale = getScale(width, height);
 
-    const dragImage = new DragImage({ imageEl, x, y, width: width * scale, height: height * scale, ctx: this.ctx, canvas: this.canvas })
+
+    const dragImage = new DragImage({ imageEl, x: imageX, y: imageY, width: width * scale, height: height * scale, ctx: this.ctx, canvas: this.canvas })
 
     // 将image push进dragArray中
     this.dragArray.push(dragImage)
 
     dragImage.paint();
+
+    return dragImage;
   }
 
   // 画出dragArray中的每个物体

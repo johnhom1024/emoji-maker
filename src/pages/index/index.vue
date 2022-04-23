@@ -5,7 +5,20 @@
  * @Description: 
 -->
 <template>
-  <view>
+  <view class="full flex flex-column">
+    <div class="top-bar px-30 flex">
+      <div class="w-200">
+        <u-button size="small" type="error" shape="circle" @click="clearCanvas"
+          >清空画布</u-button
+        >
+      </div>
+      <div class="spacer"></div>
+      <div class="w-200">
+        <u-button size="small" type="success" shape="circle" @click="save"
+          >保存相册</u-button
+        >
+      </div>
+    </div>
     <!-- 画布 -->
     <view class="vh-50 drawer">
       <canvas
@@ -18,25 +31,54 @@
         @touchmove="handleTouchmove"
       ></canvas>
     </view>
-    <!-- 操作 -->
-    <view class="operation">
-      <view class="mb-20">
-        <u-button type="primary" @click="chooseImage"> 选择图片 </u-button>
-      </view>
-      <view class="mb-20">
-        <u-button type="error" @click="clearCanvas"> 清除画布 </u-button>
-      </view>
-      <view class="input-wrapper mb-20 flex align-center">
-        <view class="w-60 mr-20">
-          <u--input
-            placeholder="请输入内容"
-            v-model="inputText"
-            @input="handleInputText"
-          ></u--input>
+    <view class="operation flex-auto flex flex-column">
+      <div class="mb-30">
+        <!-- 操作 -->
+        <u-subsection
+          :list="tabList"
+          :fontSize="28"
+          :current="currentIndex"
+          @change="changeTab"
+        ></u-subsection>
+      </div>
+      <!-- 操作 -->
+      <template v-if="currentIndex === 0">
+        <view class="mb-20">
+          <u-button type="primary" @click="chooseImage"> 选择图片 </u-button>
         </view>
-        <u-button @click="addText">加上文字</u-button>
-      </view>
-      <u-button type="success" @click="save">生成图片</u-button>
+        <view class="input-wrapper mb-20 flex align-center">
+          <view class="w-60 mr-20">
+            <u--input
+              placeholder="请输入内容"
+              v-model="inputText"
+              @input="handleInputText"
+            ></u--input>
+          </view>
+          <u-button @click="addText">加上文字</u-button>
+        </view>
+      </template>
+
+      <!-- 素材 -->
+      <template v-if="currentIndex === 1">
+        <div class="source-material-list">
+          <u-grid :col="4" :border="false" @click="handleClickMaterial">
+            <u-grid-item
+              v-for="img in materialList"
+              :key="img"
+              :name="img"
+              :customStyle="gridItemStyle"
+            >
+              <div class="source-material-item w-full">
+                <image
+                  :src="img"
+                  mode="aspectFill"
+                  class="source-material-image"
+                ></image>
+              </div>
+            </u-grid-item>
+          </u-grid>
+        </div>
+      </template>
     </view>
   </view>
 </template>
@@ -45,10 +87,24 @@
 import { Vue, Component } from "vue-property-decorator";
 import DragCanvas from "@/util/DragCanvas";
 import DragText from "@/util/DragText";
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from "lodash-es";
 
+// image
+const materialList = [
+  "/static/material/1.jpg",
+  "/static/material/2.jpg",
+  "/static/material/3.jpg",
+  "/static/material/4.jpg",
+];
 @Component
 export default class CanvasIndex extends Vue {
+  tabList = ["通用", "素材"];
+  currentIndex = 0;
+  materialList = materialList;
+  gridItemStyle = {
+    padding: "8rpx",
+  };
+
   dragCanvasInstance = {} as DragCanvas;
   inputText = "";
   // 选中的拖拽文字
@@ -104,6 +160,22 @@ export default class CanvasIndex extends Vue {
       this.dragCanvasInstance.paint();
     }
   }
+
+  changeTab(index) {
+    this.currentIndex = index;
+  }
+
+  // 点击素材中的图片
+  handleClickMaterial(path) {
+    uni.getImageInfo({
+      src: path,
+      success: async (imageInfo) => {
+        const { width, height } = imageInfo;
+
+        this.dragCanvasInstance.drawImg(path, width, height);
+      },
+    });
+  }
 }
 </script>
 
@@ -116,6 +188,27 @@ page {
 </style>
 
 <style lang="scss" scoped>
+.full {
+  min-height: 100vh;
+}
+
+.p-8 {
+  padding: 8rpx;
+}
+
+.w-full {
+  width: 100%;
+}
+.w-200 {
+  width: 200rpx;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+.px-30 {
+  padding: 10rpx 30rpx 10rpx;
+}
 .vh-50 {
   height: 50vh;
 }
@@ -130,6 +223,10 @@ page {
 }
 .flex {
   display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 .flex-auto {
   flex: auto;
@@ -155,6 +252,10 @@ page {
 .mb-20 {
   margin-bottom: 20rpx;
 }
+
+.mb-30 {
+  margin-bottom: 30rpx;
+}
 .drawer {
   padding: 30rpx;
   background-color: #efefef;
@@ -164,9 +265,29 @@ page {
   border: 2rpx solid #e1e1e1;
 }
 .operation {
-  padding: 30rpx;
+  padding: 20rpx 30rpx 0;
 }
 // .input-wrapper {
 //   padding: ;
 // }
+
+.source-material-list {
+  margin-left: -6rpx;
+  margin-right: -6rpx;
+}
+.source-material-item {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  border: 2rpx solid #d9d9d9;
+  border-radius: 8rpx;
+  overflow: hidden;
+  .source-material-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
 </style>
