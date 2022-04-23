@@ -28,30 +28,6 @@ export function createImage(src: string, canvas: any): Promise<any> {
   })
 }
 
-// TODO 这个要封装到DragCanvas内部 根据图片的宽高，返回图片的缩放比例
-export function getScale(imageWidth: number, imageHeight: number): number {
-  let scale = 1;
-  // 获取最大的一边
-  const canvasWidth = 343 * 2;
-  const canvasHeight = 482 * 2;
-
-  const heightDiff = imageHeight - canvasHeight;
-  const widthDiff = imageWidth - canvasWidth;
-
-  if (heightDiff > widthDiff) {
-    if (heightDiff > 0) {
-
-      scale = canvasHeight / imageHeight;
-    }
-  } else {
-    if (widthDiff > 0) {
-      scale = canvasWidth / imageWidth;
-    }
-  }
-
-  return scale;
-}
-
 /**
  * @description: 判断给出的坐标是否在矩形内部
  * @param {object} touch 点击的坐标 {x, y}

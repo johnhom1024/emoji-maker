@@ -5,7 +5,7 @@
  * @Description: 
  */
 
-import { createImage, getScale } from "@/util";
+import { createImage } from "@/util";
 import DragItem from '@/util/extends/DragItem';
 import DragCustomEvent from './DragCustomEvent';
 import DragImage from './DragImage';
@@ -97,13 +97,16 @@ class DragCanvas {
     const centerCanvasX = this.canvasWidth / 2;
     const centerCavnasY = this.canvasHeight / 2;
 
+    const scale = this.getScale(width, height);
+
+    width = width * scale;
+    height = height * scale;
+    
+
     const imageX = centerCanvasX - width / 2;
     const imageY = centerCavnasY - height / 2;
 
-    const scale = getScale(width, height);
-
-
-    const dragImage = new DragImage({ imageEl, x: imageX, y: imageY, width: width * scale, height: height * scale, ctx: this.ctx, canvas: this.canvas })
+    const dragImage = new DragImage({ imageEl, x: imageX, y: imageY, width, height, ctx: this.ctx, canvas: this.canvas })
 
     // 将image push进dragArray中
     this.dragArray.push(dragImage)
@@ -111,6 +114,29 @@ class DragCanvas {
     dragImage.paint();
 
     return dragImage;
+  }
+
+  getScale(imageWidth: number, imageHeight: number): number {
+    let scale = 1;
+    // 高度再加上32（scaleIcon的高度一般）和 24（关闭icon的一半）
+    imageHeight = imageHeight + 128 + 96;
+    imageWidth = imageWidth + 128 + 96;
+
+    // 获取最大的一边
+    const heightDiff = imageHeight - this.canvasHeight;
+    const widthDiff = imageWidth - this.canvasWidth;
+
+    if (heightDiff > widthDiff) {
+      if (heightDiff > 0) {
+        scale = this.canvasHeight / imageHeight;
+      }
+    } else {
+      if (widthDiff > 0) {
+        scale = this.canvasWidth / imageWidth;
+      }
+    }
+
+    return scale;
   }
 
   // 画出dragArray中的每个物体
