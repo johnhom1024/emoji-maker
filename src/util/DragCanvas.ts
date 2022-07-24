@@ -146,6 +146,12 @@ class DragCanvas {
     })
   }
 
+  // 重新绘制
+  repaint() {
+    this.clearRect();
+    this.paint();
+  }
+
   // 在画布的底部中间位置生成文字
   fillText(text: string): DragText {
     const textItem = new DragText({ text, canvasHeight: this.canvasHeight, canvasWidth: this.canvasWidth, ctx: this.ctx });
@@ -265,6 +271,12 @@ class DragCanvas {
 
   // 生成图片，并且保存到相册中
   save() {
+    // 这里先便利一遍dragArray，把里面的元素都设置成未选中的状态
+    this.dragArray.forEach(item => {
+      item.selected = false;
+    })
+
+    this.repaint();
     wx.canvasToTempFilePath({
       x: 0,
       y: 0,
