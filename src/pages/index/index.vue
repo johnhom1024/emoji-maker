@@ -87,7 +87,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import DragCanvas from "@/util/DragCanvas";
 import DragText from "@/util/DragText";
-import { isEmpty } from "lodash-es";
+import { isEmpty } from "lodash";
 
 // image
 const materialList = [

@@ -10,7 +10,7 @@ import DragItem from '@/util/extends/DragItem';
 import DragCustomEvent from './DragCustomEvent';
 import DragImage from './DragImage';
 import DragText from './DragText';
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash';
 class DragCanvas {
   ctx = {} as CanvasRenderingContext2D;
   canvas = {};

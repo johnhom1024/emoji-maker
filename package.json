@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "npm run dev:h5",
-    "build": "npm run build:h5",
+    "serve": "npm run dev:mp-weixin",
+    "build": "npm run build:mp-weixin",
     "build:app-plus": "cross-env NODE_ENV=production UNI_PLATFORM=app-plus vue-cli-service uni-build",
     "build:custom": "cross-env NODE_ENV=production uniapp-cli custom",
     "build:h5": "cross-env NODE_ENV=production UNI_PLATFORM=h5 vue-cli-service uni-build",
@@ -67,7 +67,6 @@
     "@vue/shared": "^3.0.0",
     "core-js": "^3.6.5",
     "flyio": "^0.6.2",
-    "lodash-es": "^4.17.21",
     "regenerator-runtime": "^0.12.1",
     "uview-ui": "^2.0.29",
     "vue": "^2.6.11",
