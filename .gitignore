@@ -3,8 +3,10 @@ node_modules/
 unpackage/
 dist/
 project.private.config.json
+privateKey/
 
 # local env files
+.env
 .env.local
 .env.*.local
 
