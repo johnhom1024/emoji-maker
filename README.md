@@ -2,9 +2,10 @@
 
 > 基于 `Uniapp` + `Vue2.X` + `Typescript` 实现的表情包DIY微信小程序。
 
-这个小程序可以上传手机相册中的图片，对照片进行拖拽、旋转等各种操作，同时还能自定义设置文字，因为表情包肯定少不了文字，对吧:)
-
 ![image](https://github.com/johnhom1024/emoji-maker/blob/main/example/screenshot.JPEG)
+
+
+这个小程序可以上传手机相册中的图片，对照片进行拖拽、旋转等各种操作，同时还能自定义设置文字，因为表情包肯定少不了文字，对吧:)
 
 ## 上手玩一玩
 
