@@ -4,13 +4,13 @@
 
 这个小程序可以上传手机相册中的图片，对照片进行拖拽、旋转等各种操作，同时还能自定义设置文字，因为表情包肯定少不了文字，对吧:)
 
-![image](https://github.com/johnhom1024/emoji-marker/raw/master/example/screenshot.JPEG)
+![image](https://github.com/johnhom1024/emoji-maker/blob/main/example/screenshot.JPEG)
 
 ## 上手玩一玩
 
 打开微信扫描以下的二维码即可
 
-![image](https://github.com/johnhom1024/emoji-marker/raw/master/example/miniapp_qrcode.jpg)
+![image](https://github.com/johnhom1024/emoji-maker/blob/main/example/miniapp_qrcode.jpg)
 
 ## TODO
 
