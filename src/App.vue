@@ -18,4 +18,6 @@
 @import '~@/assets/scss/public.scss';
 @import "uview-ui/index.scss";
 @import '~@/assets/scss/uview.scss';
+@import 'tailwindcss/base';
+@import 'tailwindcss/utilities';
 </style>

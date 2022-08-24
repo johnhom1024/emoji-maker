@@ -5,6 +5,11 @@
  * @Description: 
  */
 
+const { UniAppWeappTailwindcssWebpackPluginV4 } = require('weapp-tailwindcss-webpack-plugin')
+
 module.exports = {
+  configureWebpack: {
+    plugins: [new UniAppWeappTailwindcssWebpackPluginV4()]
+  },
   transpileDependencies: ['uview-ui']
 }

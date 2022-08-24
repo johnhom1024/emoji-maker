@@ -7,7 +7,7 @@
 <template>
   <view class="full flex flex-column">
     <div class="top-bar px-30 flex">
-      <div class="w-200">
+      <div class="w-200 flex-[0_0_200rpx]">
         <u-button size="small" type="error" shape="circle" @click="clearCanvas"
           >清空画布</u-button
         >
