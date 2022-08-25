@@ -1,7 +1,6 @@
 const pluginName = require("./shared");
 const getOptions = require('./defaults');
 const styleHander = require('./postcss/index');
-
 class UniappTailwindcssWebpackPlugin {
   options = {};
   constructor(options) {
