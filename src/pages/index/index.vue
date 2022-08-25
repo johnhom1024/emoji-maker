@@ -5,8 +5,8 @@
  * @Description: 
 -->
 <template>
-  <view class="full flex flex-column">
-    <div class="top-bar px-30 flex">
+  <view class="full flex flex-col">
+    <div class="top-bar px-[30rpx] flex">
       <div class="w-200">
         <u-button size="small" type="error" shape="circle" @click="clearCanvas"
           >清空画布</u-button
