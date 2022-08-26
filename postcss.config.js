@@ -18,11 +18,11 @@ module.exports = {
       remove: process.env.UNI_PLATFORM !== 'h5'
     }),
     require("tailwindcss")({ config: "./tailwind.config.js" }),
-    require("postcss-class-rename")({
-      "\\\\:": "--",
-      "\\\\/": "--",
-      "\\\\.": "--",
-    }),
+    // require("postcss-class-rename")({
+    //   "\\\\:": "--",
+    //   "\\\\/": "--",
+    //   "\\\\.": "--",
+    // }),
     require('@dcloudio/vue-cli-plugin-uni/packages/postcss')
   ]
 }

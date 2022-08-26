@@ -5,13 +5,14 @@ const createTransform = (rule = {}, options = {}) => {
   const replaceFlag = options.replaceUniversalSelectorWith !== false;
   const transform = (selectors) => {
     selectors.walk((selector) => {
+      // 如果是 * 这种通配符，则替换成replaceUniversalSelectorWith
       if (selector.type === "universal" && replaceFlag) {
         selector.value = options.replaceUniversalSelectorWith;
       }
 
       if (selector.type === "selector") {
         console.log('----------johnhomLogDebug selector.nodes', selector.nodes)
-        // 这里去掉:hover的样式
+        // 这里去掉:hover伪类
         const node = selector.nodes.find(
           (x) => x.type === "pseudo" && x.value === ":hover"
         );

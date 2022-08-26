@@ -108,7 +108,8 @@
     "sass-loader": "^10",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "^3.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-sources": "^3.2.3"
   },
   "browserslist": [
     "Android >= 4.4",
