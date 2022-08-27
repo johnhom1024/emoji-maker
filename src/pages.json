@@ -5,7 +5,13 @@
 			"style": {
 				"navigationBarTitleText": "制作表情包"
 			}
-		}
+		},
+    {
+      "path": "pages/demo/index",
+      "style": {
+				"navigationBarTitleText": "测试"
+			}
+    }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
