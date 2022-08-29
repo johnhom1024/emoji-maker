@@ -4,7 +4,7 @@
  * @LastEditors: handsome_anthony
  * @Description: 
  */
-const UniappTailwindcssWebpackPlugin = require('./plugins/tailwindcss-webpack-plugin/UniappTailwindcssWebpackPluginV4');
+const UniappTailwindcssWebpackPlugin = require('./plugins/tailwindcss-webpack-plugin/v4');
 
 module.exports = {
   transpileDependencies: ['uview-ui'],

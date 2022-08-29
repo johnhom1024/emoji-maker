@@ -11,7 +11,7 @@ const createTransform = (rule = {}, options = {}) => {
       }
 
       if (selector.type === "selector") {
-        console.log('----------johnhomLogDebug selector.nodes', selector.nodes)
+        // console.log('----------johnhomLogDebug selector.nodes', selector.nodes)
         // 这里去掉:hover伪类
         const node = selector.nodes.find(
           (x) => x.type === "pseudo" && x.value === ":hover"

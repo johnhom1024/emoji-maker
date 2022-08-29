@@ -1,6 +1,7 @@
 const pluginName = require("./shared");
 const getOptions = require('./defaults');
 const styleHander = require('./postcss/index');
+const { templateHandler } = require('./wxml/index');
 const { ConcatSource } = require('webpack-sources');
 class UniappTailwindcssWebpackPlugin {
   options = {};
@@ -20,8 +21,12 @@ class UniappTailwindcssWebpackPlugin {
           })
           const source = new ConcatSource(css);
           compilation.updateAsset(filename, source);
-        } else if (htmlMatcher) {
-          const rawSource = originalSource.source().toString()
+        } else if (htmlMatcher(filename)) {
+          const rawSource = originalSource.source().toString();
+          const wxml = templateHandler(rawSource);
+          // console.log('----------johnhomLogDebug wxml', wxml);
+          const source = new ConcatSource(wxml);
+          compilation.updateAsset(filename, source);
         }
       }
     })
